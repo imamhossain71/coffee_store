@@ -79,8 +79,8 @@ export default function HomeItem() {
                 <h1 className='font-bold text-xl'>
                   Name: <span className='font-light'>{item.name}</span>
                 </h1>
-                <p>Per Short: {item.Prise}</p>
-                <p>Dalal: {item.supplier}</p>
+                <p>Prise: ${item.Prise}</p>
+                <p>Supplier: {item.supplier}</p>
                 <div className='mt-2'>
                   <button
                     className='btn bg-red-500 text-white px-3 py-1 rounded mx-1'
