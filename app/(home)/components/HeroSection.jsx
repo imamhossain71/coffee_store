@@ -6,7 +6,7 @@ export default function HeroSection() {
       <div
         className='hero min-h-screen'
         style={{
-          backgroundImage: 'url(/assets/image/coffeebg.jpg)',
+          backgroundImage: 'url(/assets/image/chandpur.jpeg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}

@@ -24,8 +24,9 @@ export default function DetailsPage() {
       <h1 className='text-2xl font-bold mb-4'>Coffee Details</h1>
       <Image src={data.photo} alt={data.name} width={200} height={200} />
       <h2 className='text-xl mt-2'>Name: {data.name}</h2>
-      <p>Price: {data.Prise}</p>
-      <p>Supplier: {data.supplier}</p>
+      {/* <p>Price: {data.Prise}</p>
+      <p>Supplier: {data.supplier}</p> */}
+      <p className='mt-2'>Details: {data.details}</p>
     </div>
   )
 }

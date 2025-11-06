@@ -1,7 +1,6 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 import Link from 'next/link'
 
@@ -13,8 +12,8 @@ export default function HomeItem() {
       .then((res) => res.json())
       .then((data) => setData(data))
   }, [])
+
   const handleDelete = (id) => {
-    console.log('ID:', id)
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -24,25 +23,31 @@ export default function HomeItem() {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
-      console.log(result.isConfirmed)
       if (result.isConfirmed) {
-        //Detlating Item
         fetch(`http://localhost:3000/coffees/${id}`, {
           method: 'DELETE',
         })
           .then((res) => res.json())
-          .then((data) => {
-            if (data.deletedCount) {
+          .then((response) => {
+            if (response.deletedCount) {
+              setData((prevData) => prevData.filter((item) => item._id !== id))
+
               Swal.fire({
                 title: 'Deleted!',
-                text: 'Your file has been deleted.',
+                text: 'Your item has been deleted.',
                 icon: 'success',
+                timer: 1500,
               })
             }
+          })
+          .catch((error) => {
+            console.error('Delete error:', error)
+            Swal.fire('Error', 'Failed to delete item', 'error')
           })
       }
     })
   }
+
   const handleUpdate = (id) => {
     console.log('Update ID:', id)
   }
@@ -50,7 +55,7 @@ export default function HomeItem() {
   return (
     <div className='flex w-full my-4'>
       <div
-        className=' gap-3 grid grid-cols-1 md:grid-cols-3 w-full '
+        className='gap-3 grid grid-cols-1 md:grid-cols-3 w-full'
         style={{
           backgroundImage: 'url(/assets/image/cobg.jpg)',
           backgroundSize: 'cover',
@@ -61,31 +66,39 @@ export default function HomeItem() {
           data.map((item) => (
             <div
               key={item._id}
-              className='flex flex-row  border-3 border-black gap-6 p-4'
+              className='flex flex-row border-3 border-black gap-6 p-4 bg-white/70 rounded-lg shadow'
             >
-              <Image src={item.photo} width={100} height={200} alt='coffee' />
+              <Image
+                src={item.photo}
+                width={100}
+                height={200}
+                alt='coffee'
+                className='rounded'
+              />
               <div>
                 <h1 className='font-bold text-xl'>
-                  Name: <span className='font-light'> {item.name}</span>
+                  Name: <span className='font-light'>{item.name}</span>
                 </h1>
-                <p>Prise:{item.Prise}</p>
-                <span>Supplier: {item.supplier}</span>
-                <div>
+                <p>Per Short: {item.Prise}</p>
+                <p>Dalal: {item.supplier}</p>
+                <div className='mt-2'>
                   <button
-                    className='btn mx-1'
+                    className='btn bg-red-500 text-white px-3 py-1 rounded mx-1'
                     onClick={() => handleDelete(item._id)}
                   >
                     Delete
                   </button>
                   <Link
-                    className='btn'
+                    className='btn bg-blue-500 text-white px-3 py-1 rounded mx-1'
                     onClick={() => handleUpdate(item._id)}
                     href={`/updatecoffee/${item._id}`}
                   >
-                    {/* <Link href={`/updatecoffee`}>up</Link> */}
                     Edit
                   </Link>
-                  <Link href={`/itemdetails/${item._id}`} className='btn mx-2'>
+                  <Link
+                    href={`/itemdetails/${item._id}`}
+                    className='btn bg-green-500 text-white px-3 py-1 rounded mx-1'
+                  >
                     View
                   </Link>
                 </div>
